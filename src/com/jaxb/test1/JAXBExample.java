@@ -1,6 +1,10 @@
 package com.jaxb.test1;
 
 import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -12,6 +16,28 @@ public class JAXBExample {
 		customer.setId(100);
 		customer.setName("benson");
 		customer.setAge(23);
+		Products products = new Products();
+		products.setTestAttr(34234);
+		List<Product> productList = new ArrayList<Product>();
+		Product product1 = new Product();
+		product1.setId(99);
+		product1.setName("pro1");
+		product1.setTypeName("A");
+		productList.add(product1);
+		Product product2 = new Product();
+		product2.setId(199);
+		product2.setName("pro2");
+		product2.setTypeName("B");
+		productList.add(product2);
+		products.setProductList(productList);
+		customer.setProducts(products);
+
+//		try {
+//			MessageDigest digest = MessageDigest.getInstance("MD5");
+//		//	customer.
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
 
 		try {
 
