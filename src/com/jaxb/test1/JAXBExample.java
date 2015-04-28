@@ -1,6 +1,14 @@
 package com.jaxb.test1;
 
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -17,7 +25,7 @@ public class JAXBExample {
 		customer.setName("benson");
 		customer.setAge(23);
 		Products products = new Products();
-		products.setTestAttr(34234);
+//		products.setTestAttr(34234);
 		List<Product> productList = new ArrayList<Product>();
 		Product product1 = new Product();
 		product1.setId(99);
@@ -32,12 +40,40 @@ public class JAXBExample {
 		products.setProductList(productList);
 		customer.setProducts(products);
 
-//		try {
-//			MessageDigest digest = MessageDigest.getInstance("MD5");
-//		//	customer.
-//		} catch (NoSuchAlgorithmException e) {
-//			e.printStackTrace();
-//		}
+
+		// test base64 encoding and decoding
+		try {
+
+			// encode from obj to string
+			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+			ObjectOutputStream objOut = new ObjectOutputStream(bOut);
+			objOut.writeObject(customer);
+			BASE64Encoder encoder = new BASE64Encoder();
+			String codeStr = encoder.encode(bOut.toByteArray());
+
+			// show encoded string
+			System.out.println("---------------------------------");
+			System.out.println(codeStr);
+			System.out.println("---------------------------------");
+
+			// try to decode string to original object.
+			BASE64Decoder base64Decoder = new BASE64Decoder();
+			byte[] b = base64Decoder.decodeBuffer(codeStr);
+			ByteArrayInputStream bis = new ByteArrayInputStream(b);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			ois.readObject();
+
+			// close all
+			bOut.close();
+			objOut.close();
+			bis.close();
+			ois.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
 
 		try {
 

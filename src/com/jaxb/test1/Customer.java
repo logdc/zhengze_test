@@ -3,10 +3,14 @@ package com.jaxb.test1;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.List;
 
 @XmlRootElement
-public class Customer {
+public class Customer implements Serializable{
+
+	private static final long serialVersionUID = 6420486923869074233L;
+
 	private String name;
 	private int age;
 	private int id;
@@ -46,5 +50,29 @@ public class Customer {
 	@XmlElement (name="products")
 	public void setProducts(Products products) {
 		this.products = products;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Customer)) return false;
+
+		Customer customer = (Customer) o;
+
+		if (age != customer.age) return false;
+		if (id != customer.id) return false;
+		if (name != null ? !name.equals(customer.name) : customer.name != null) return false;
+		if (products != null ? !products.equals(customer.products) : customer.products != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = name != null ? name.hashCode() : 0;
+		result = 31 * result + age;
+		result = 31 * result + id;
+		result = 31 * result + (products != null ? products.hashCode() : 0);
+		return result;
 	}
 }
