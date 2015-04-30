@@ -13,3 +13,5 @@ hs_err_pid*
 
 /.idea/
 /MyDbTest/
+*.txt
+derby.log
